@@ -8,9 +8,9 @@ module Grape
     def self.included(base)
       base.class_eval do
         helpers do
-          def paginate(collection)
+          def paginate(collection, options = {})
             collection.page(params[:page]).per(params[:per_page]).padding(params[:offset]).tap do |data|
-              header "X-Total",       data.total_count.to_s
+              header "X-Total",       options[:total_count] || data.total_count.to_s
               header "X-Total-Pages", data.num_pages.to_s
               header "X-Per-Page",    data.limit_value.to_s
               header "X-Page",        data.current_page.to_s
