@@ -8,16 +8,8 @@ module Grape
     def self.included(base)
       base.class_eval do
         helpers do
-          def paginate(collection, options = {})
-            collection.page(params[:page]).per(params[:per_page]).padding(params[:offset]).tap do |data|
-              header "X-Total",       options[:total_count] || data.total_count.to_s
-              header "X-Total-Pages", options[:total_count] ? (options[:total_count]/params[:per_page]).ceil : data.num_pages.to_s
-              header "X-Per-Page",    data.limit_value.to_s
-              header "X-Page",        data.current_page.to_s
-              header "X-Next-Page",   data.next_page.to_s
-              header "X-Prev-Page",   data.prev_page.to_s
-              header "X-Offset",      params[:offset].to_s
-            end
+          def paginate(collection)
+            collection.page(params[:page]).per(params[:per_page]).padding(params[:offset])
           end
         end
 
